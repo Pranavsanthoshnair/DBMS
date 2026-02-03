@@ -6,6 +6,8 @@ Create a table named Companies that contain Company_Id,Name of the company,Adres
 4) Drop the Table
 5) Truncate the Table
 6) Add 2 new Columns DOB,Gender into the Company
+7) Select Name and Adress from Company
+8) Remove Unwanted Columns
 */
 
 CREATE TABLE COMPANIES(Company_Id INT Primary Key,Name VARCHAR(20),Adress VARCHAR(50),Email VARCHAR(30),Phone_no INT);
@@ -21,3 +23,6 @@ TRUNCATE TABLE COMPANY_DB;
 SELECT * FROM COMPANY_DB;
 ALTER TABLE COMPANY_DB Add(DOB Date,Gender VARCHAR(20));
 INSERT into COMPANY_DB VALUES(6,'Indumati','Delhi','indumati@gmail.com',7309890652,'02-08-2011','Female');
+SELECT Name,Adress from COMPANY_DB;
+ALTER TABLE COMPANY_DB DROP Column DOB;
+ALTER TABLE COMPANY_DB DROP Column GENDER;
