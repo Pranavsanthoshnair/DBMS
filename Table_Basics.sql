@@ -1,0 +1,9 @@
+CREATE TABLE STUDENT(Student_ID INT,Name VARCHAR(20),Adress VARCHAR(50),DOB DATE);
+INSERT INTO STUDENT(student_id,name,Adress,DOB) VALUES(1,'Pranav','Kottayam','28-11-2006');
+INSERT INTO STUDENT(student_id,name,Adress,DOB) VALUES(2,'Ronaldo','Portugal','05-04-1970');
+INSERT INTO STUDENT(student_id,name,Adress,DOB) VALUES(3,'Messi','Argentina','11-07-2006');
+INSERT INTO STUDENT(student_id,name,Adress,DOB) VALUES(4,'Kohli','India','05-11-1985');
+SELECT * FROM STUDENT;
+INSERT INTO STUDENT VALUES(5,'UNKNOWN','Pakistan','01-01-2001');
+DROP TABLE STUDENT;
+SELECT * FROM STUDENT;
