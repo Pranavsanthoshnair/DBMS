@@ -11,18 +11,24 @@ INSERT INTO Employee VALUES (3,'Chris Evans','Production',6000);
 INSERT INTO Employee VALUES (4,'Alice Johnson','Sales',9500);
 INSERT INTO Employee VALUES (5,'Daniel White','Marketing',5000);
 
+SELECT * FROM Employee;
+
 SELECT * FROM Employee
 WHERE Salary > 7000;
 
 UPDATE Employee
 SET Salary = 8200
 WHERE Emp_Name = 'David Smith';
+SELECT * FROM Employee;
 
 INSERT INTO Employee VALUES
 (6,'Dammiel Harris','Production',6700);
 
+SELECT * FROM Employee;
+
 DELETE FROM Employee
 WHERE Emp_Id = 3;
+SELECT * FROM Employee;
 
 SELECT * FROM Employee
 WHERE Emp_Name NOT LIKE 'D%'
@@ -35,9 +41,11 @@ GROUP BY Dept;
 UPDATE Employee
 SET Salary = Salary + (Salary * 5 / 100)
 WHERE Dept = 'Production';
+SELECT * FROM Employee;
 
 DELETE FROM Employee
 WHERE Salary < 7000;
+SELECT * FROM Employee;
 
 SELECT * FROM Employee
 WHERE Salary = (SELECT MIN(Salary) FROM Employee);
@@ -45,6 +53,7 @@ WHERE Salary = (SELECT MIN(Salary) FROM Employee);
 UPDATE Employee
 SET Salary = 8200
 WHERE Dept = 'Marketing';
+SELECT * FROM Employee;
 
 SELECT * FROM Employee
 WHERE Emp_Name LIKE 'A%';
