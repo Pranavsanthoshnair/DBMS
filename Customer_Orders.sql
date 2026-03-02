@@ -76,6 +76,10 @@ INSERT INTO Delivery VALUES (3,3,8);
 
 
 
+--------------------------------------------------
+-- QUESTION 5.2
+--------------------------------------------------
+
 -- Customers Grouped by State
 
 SELECT State,COUNT(*)
@@ -84,7 +88,7 @@ GROUP BY State;
 
 
 
--- Items Grouped by Category with Price > Average
+-- Items Grouped by Category with Price > Average Price
 
 SELECT Category,AVG(Price)
 FROM Items
@@ -103,3 +107,31 @@ FROM Customers,Orders
 WHERE Customers.CustID=Orders.CustID
 GROUP BY CustName
 HAVING COUNT(OrderID)>5;
+
+
+
+--------------------------------------------------
+-- QUESTION 6
+--------------------------------------------------
+
+-- Customers Who Placed Orders
+
+SELECT DISTINCT Customers.*
+FROM Customers,Orders
+WHERE Customers.CustID=Orders.CustID;
+
+
+
+-- Customers Whose Orders Delivered
+
+SELECT DISTINCT Customers.*
+FROM Customers,Delivery
+WHERE Customers.CustID=Delivery.CustID;
+
+
+
+-- Order Date for All Customers
+
+SELECT CustName,OrderDate
+FROM Customers,Orders
+WHERE Customers.CustID=Orders.CustID;
