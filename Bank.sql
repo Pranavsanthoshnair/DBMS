@@ -4,14 +4,12 @@ CREATE TABLE Bank(
     HeadOffice VARCHAR(50),
     Branch VARCHAR(50)
 );
-SELECT * FROM Bank;
 
-INSERT INTO Bank VALUES
-(1,'SBI','Ernakulam','Kottayam'),
-(2,'HDFC','Ernakulam','Thrissur'),
-(3,'ICICI','Kochi','Kottayam'),
-(4,'Axis','Ernakulam','Alappuzha'),
-(5,'Federal','Aluva','Kottayam');
+INSERT INTO Bank VALUES (1,'SBI','Ernakulam','Kottayam');
+INSERT INTO Bank VALUES (2,'HDFC','Ernakulam','Thrissur');
+INSERT INTO Bank VALUES (3,'ICICI','Kochi','Kottayam');
+INSERT INTO Bank VALUES (4,'Axis','Ernakulam','Alappuzha');
+INSERT INTO Bank VALUES (5,'Federal','Aluva','Kottayam');
 SELECT * FROM Bank;
 
 COMMIT;
@@ -34,14 +32,12 @@ CREATE TABLE Branch(
     BranchName VARCHAR(50),
     BankCode INT
 );
-SELECT * FROM Branch;
 
-INSERT INTO Branch VALUES
-(101,'Kottayam',1),
-(102,'Thrissur',2),
-(103,'Kottayam',3),
-(104,'Alappuzha',4),
-(105,'Kottayam',5);
+INSERT INTO Branch VALUES (101,'Kottayam',1);
+INSERT INTO Branch VALUES (102,'Thrissur',2);
+INSERT INTO Branch VALUES (103,'Kottayam',3);
+INSERT INTO Branch VALUES (104,'Alappuzha',4);
+INSERT INTO Branch VALUES (105,'Kottayam',5);
 SELECT * FROM Branch;
 
 CREATE VIEW bank_headoffice AS
