@@ -1,73 +1,217 @@
-CREATE TABLE Customers
-(
-CustID INT PRIMARY KEY,
-CustName VARCHAR(30),
-Address VARCHAR(50),
-State VARCHAR(20)
+CREATE TABLE Items(
+    ItemID INT PRIMARY KEY,
+    ItemName VARCHAR(50),
+    Category VARCHAR(50),
+    Price INT,
+    Instock INT
 );
-CREATE TABLE Items
-(
-ItemID INT PRIMARY KEY,
-ItemName VARCHAR(30),
-Category VARCHAR(30),
-Price INT,
-Instock INT
+SELECT * FROM Items;
+
+CREATE TABLE Customers(
+    CustID INT PRIMARY KEY,
+    CustName VARCHAR(50),
+    Address VARCHAR(100),
+    State VARCHAR(50)
 );
-CREATE TABLE Orders
-(
-OrderID INT PRIMARY KEY,
-CustID INT,
-ItemID INT,
-Quantity INT,
-OrderDate DATE,
-FOREIGN KEY (CustID) REFERENCES Customers(CustID),
-FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
+SELECT * FROM Customers;
+
+CREATE TABLE Orders(
+    OrderID INT PRIMARY KEY,
+    CustID INT,
+    ItemID INT,
+    Quantity INT,
+    OrderDate DATE
 );
-CREATE TABLE Delivery
-(
-DeliveryID INT PRIMARY KEY,
-CustID INT,
-OrderID INT,
-FOREIGN KEY (CustID) REFERENCES Customers(CustID),
-FOREIGN KEY (OrderID) REFERENCES Orders(OrderID)
+SELECT * FROM Orders;
+
+CREATE TABLE Delivery(
+    DeliveryID INT PRIMARY KEY,
+    CustID INT,
+    OrderID INT
 );
-INSERT INTO Customers VALUES (1,'Arun','Kochi','Kerala');
-INSERT INTO Customers VALUES (2,'Meera','TVM','Kerala');
-INSERT INTO Customers VALUES (3,'Rahul','Chennai','TamilNadu');
-INSERT INTO Customers VALUES (4,'Anu','Bangalore','Karnataka');
-INSERT INTO Customers VALUES (5,'Ravi','Kochi','Kerala');
-SELECT * FROM CUSTOMERS;
-INSERT INTO Items VALUES (1,'Pen','Stationery',10,100);
-INSERT INTO Items VALUES (2,'Book','Stationery',50,60);
-INSERT INTO Items VALUES (3,'Mouse','Electronics',500,20);
-INSERT INTO Items VALUES (4,'Keyboard','Electronics',700,15);
-INSERT INTO Items VALUES (5,'Bag','Accessories',800,10);
-SELECT * FROM ITEMS;
-INSERT INTO Orders VALUES (1,1,1,5,DATE '2024-01-10');
-INSERT INTO Orders VALUES (2,1,2,3,DATE'2024-01-11');
-INSERT INTO Orders VALUES (3,1,3,1,DATE'2024-01-12');
-INSERT INTO Orders VALUES (4,1,4,2,DATE'2024-01-13');
-INSERT INTO Orders VALUES (5,1,5,1,DATE'2024-01-14');
-INSERT INTO Orders VALUES (6,1,2,4,DATE'2024-01-15');
-INSERT INTO Orders VALUES (7,2,3,2,DATE'2024-01-16');
-INSERT INTO Orders VALUES (8,3,1,6,DATE'2024-01-17');
-SELECT * FROM ORDERS;
-INSERT INTO Delivery VALUES (1,1,1);
-INSERT INTO Delivery VALUES (2,2,7);
-INSERT INTO Delivery VALUES (3,3,8);
-SELECT * FROM DELIVERY;
+SELECT * FROM Delivery;
+
+INSERT INTO Items VALUES
+(1,'Samsung Galaxy S4','Mobile',5200,10),
+(2,'iPhone 13','Mobile',7000,5),
+(3,'Dell Laptop','Laptop',4500,7),
+(4,'HP Laptop','Laptop',4800,6),
+(5,'Sony Headphones','Accessories',800,15),
+(6,'Logitech Mouse','Accessories',300,20);
+SELECT * FROM Items;
+
+INSERT INTO Customers VALUES
+(1,'John','Delhi','Delhi'),
+(2,'Mickey','Mumbai','Maharashtra'),
+(3,'James','Chennai','Tamil Nadu'),
+(4,'Arun','Kochi','Kerala'),
+(5,'David','Pune','Maharashtra');
+SELECT * FROM Customers;
+
+INSERT INTO Orders VALUES
+(101,1,1,2,'2013-01-10'),
+(102,2,3,1,'2013-02-15'),
+(103,2,1,1,'2013-03-20'),
+(104,3,2,1,'2012-12-25'),
+(105,4,5,3,'2014-01-11'),
+(106,2,6,2,'2015-02-05'),
+(107,2,4,1,'2016-04-18');
+SELECT * FROM Orders;
+
+INSERT INTO Delivery VALUES
+(1,1,101),
+(2,2,102),
+(3,3,104),
+(4,4,105);
+SELECT * FROM Delivery;
+
+SELECT State,COUNT(*) FROM Customers GROUP BY State;
+
+SELECT Category,AVG(Price)
+FROM Items
+GROUP BY Category
+HAVING AVG(Price)>(SELECT AVG(Price) FROM Items);
+
+SELECT CustName
+FROM Customers
+WHERE CustID IN
+(
+    SELECT CustID
+    FROM Orders
+    GROUP BY CustID
+    HAVING COUNT(OrderID)>5
+);
+
+SELECT * FROM Customers
+WHERE CustID IN
+(
+    SELECT CustID FROM Orders
+);
+
+SELECT * FROM Customers
+WHERE CustID IN
+(
+    SELECT CustID FROM Delivery
+);
+
+SELECT OrderDate
+FROM Orders
+WHERE CustID IN
+(
+    SELECT CustID FROM Customers WHERE CustName LIKE 'J%'
+);
+
+SELECT ItemName,Price
+FROM Items
+WHERE ItemID IN
+(
+    SELECT ItemID
+    FROM Orders
+    WHERE CustID IN
+    (
+        SELECT CustID FROM Customers WHERE CustName='Mickey'
+    )
+);
+
+SELECT *
+FROM Customers
+WHERE CustID IN
+(
+    SELECT CustID
+    FROM Orders
+    WHERE OrderDate>'2013-01-01'
+)
+AND CustID NOT IN
+(
+    SELECT CustID FROM Delivery
+);
+
+SELECT ItemID FROM Orders
+UNION
+SELECT ItemID FROM Orders
+WHERE OrderID NOT IN
+(
+    SELECT OrderID FROM Delivery
+);
+
+SELECT CustName
+FROM Customers
+WHERE CustID IN
+(
+    SELECT CustID FROM Orders
+)
+AND CustID IN
+(
+    SELECT CustID FROM Delivery
+);
+
+SELECT CustName
+FROM Customers
+WHERE CustID IN
+(
+    SELECT CustID FROM Orders
+)
+AND CustID NOT IN
+(
+    SELECT CustID FROM Delivery
+);
+
+SELECT CustName
+FROM Customers
+WHERE CustID=
+(
+    SELECT CustID
+    FROM Orders
+    GROUP BY CustID
+    HAVING COUNT(*)=
+    (
+        SELECT MAX(cnt)
+        FROM
+        (
+            SELECT COUNT(*) cnt FROM Orders GROUP BY CustID
+        ) t
+    )
+);
+
+SELECT *
+FROM Customers
+WHERE CustID IN
+(
+    SELECT CustID
+    FROM Orders
+    WHERE ItemID IN
+    (
+        SELECT ItemID FROM Items WHERE Price>5000
+    )
+);
+
+SELECT CustName,Address
+FROM Customers
+WHERE CustID NOT IN
+(
+    SELECT CustID
+    FROM Orders
+    WHERE ItemID IN
+    (
+        SELECT ItemID FROM Items WHERE ItemName='Samsung Galaxy S4'
+    )
+);
+
+SELECT *
+FROM Customers
+LEFT JOIN Orders
+ON Customers.CustID=Orders.CustID;
+
+SELECT *
+FROM Customers
+RIGHT JOIN Orders
+ON Customers.CustID=Orders.CustID;
+
 SELECT State,COUNT(*)
 FROM Customers
 GROUP BY State;
+
 SELECT Category,AVG(Price)
 FROM Items
-WHERE Price >
-(
-SELECT AVG(Price) FROM Items
-)
-GROUP BY Category;
-SELECT CustName
-FROM Customers,Orders
-WHERE Customers.CustID=Orders.CustID
-GROUP BY CustName
-HAVING COUNT(OrderID)>5;
+GROUP BY Category
+HAVING AVG(Price)>(SELECT AVG(Price) FROM Items);
