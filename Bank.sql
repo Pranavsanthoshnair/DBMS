@@ -1,3 +1,4 @@
+-- Exp 7 and 8
 CREATE TABLE Bank(
     BankCode INT PRIMARY KEY,
     BankName VARCHAR(50),
